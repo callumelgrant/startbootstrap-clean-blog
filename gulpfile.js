@@ -26,7 +26,10 @@ gulp.task('img', function () {
 gulp.task('simple', function() {
     return gulp.src('./dist/temp/main.css')
         .pipe(uncss({
-            html: ['./dist/index.html']
+            html: ['./dist/index.html'],
+        ignore: [
+                ''
+            ]
         }))
         .pipe(cssshrink())
         .pipe(gulp.dest('./dist/finalcss/'));
