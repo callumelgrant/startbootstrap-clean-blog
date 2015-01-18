@@ -15,11 +15,7 @@ var pngquant = require('imagemin-pngquant');
 var runSequence = require('run-sequence');
 var clean = require('gulp-clean');
 
-// This will run in this order:
-// * build-clean
-// * build-scripts and build-styles in parallel
-// * build-html
-// * Finally call the callback function
+
 gulp.task('default', function (callback){
   runSequence(
               ['img', 'html', 'less', 'js'],
