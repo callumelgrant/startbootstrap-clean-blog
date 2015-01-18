@@ -28,10 +28,15 @@ gulp.task('simple', function() {
         .pipe(uncss({
             html: ['./dist/index.html', './dist/about.html' , './dist/contact.html' , './dist/post.html'],
         ignore: [
-                ''
+                '.navbar-custom.is-fixed',
+'.navbar-custom.is-fixed .navbar-brand',
+'.navbar-custom.is-fixed .navbar-brand:hover,  .navbar-custom.is-fixed .navbar-brand:focus',
+'.navbar-custom.is-fixed .nav li a',
+'.navbar-custom.is-fixed .nav li a:hover,  .navbar-custom.is-fixed .nav li a:focus',
+'.navbar-custom.is-visible',//'navbar-custom', 'is-fixed','is-visible'
             ]
         }))
-        //.pipe(cssshrink())
+        .pipe(cssshrink())
         .pipe(gulp.dest('./dist/finalcss/'));
 });
 
