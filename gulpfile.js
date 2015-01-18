@@ -12,6 +12,26 @@ var htmlmin = require('gulp-htmlmin');
 var uncss = require('gulp-uncss');
 var imagemin = require('gulp-imagemin');
 var pngquant = require('imagemin-pngquant');
+var runSequence = require('run-sequence');
+var clean = require('gulp-clean');
+
+// This will run in this order:
+// * build-clean
+// * build-scripts and build-styles in parallel
+// * build-html
+// * Finally call the callback function
+gulp.task('default', function (callback){
+  runSequence(
+              ['img', 'html', 'less', 'js'],
+              'css',
+              callback);
+});
+
+gulp.task('test', function (callback){
+  runSequence(
+              'default','uncss',
+              callback);
+});
 
 gulp.task('img', function () {
     return gulp.src('./img/*')
@@ -23,7 +43,7 @@ gulp.task('img', function () {
         .pipe(gulp.dest('./dist/img/'));
 });
 
-gulp.task('simple', function() {
+gulp.task('uncss', function() {
     return gulp.src('./dist/temp/main.css')
         .pipe(uncss({
             html: ['./dist/index.html', './dist/about.html' , './dist/contact.html' , './dist/post.html'],
@@ -33,11 +53,12 @@ gulp.task('simple', function() {
 '.navbar-custom.is-fixed .navbar-brand:hover,  .navbar-custom.is-fixed .navbar-brand:focus',
 '.navbar-custom.is-fixed .nav li a',
 '.navbar-custom.is-fixed .nav li a:hover,  .navbar-custom.is-fixed .nav li a:focus',
-'.navbar-custom.is-visible',//'navbar-custom', 'is-fixed','is-visible'
+'.navbar-custom.is-visible',
             ]
         }))
+        .pipe(stripCssComments())
         .pipe(cssshrink())
-        .pipe(gulp.dest('./dist/finalcss/'));
+        .pipe(gulp.dest('./dist/temp/'));
 });
 
 gulp.task('html', function() {
@@ -55,17 +76,15 @@ gulp.task('less', function () {
 });
 
 gulp.task('js', function() {
- 	gulp.src(['./bower_components/jquery/dist/jquery.min.js', './bower_components/angular/angular.min.js', './bower_components/bootstrap/dist/js/bootstrap.min.js','./js/*.js'])//, '/bower_components/jquery/dist/jquery.min.js'])//gulp.src(['./js/clean-blog.js'])//, './lib/file1.js', './lib/file2.js'])
+ 	gulp.src(['./bower_components/jquery/dist/jquery.min.js', './bower_components/angular/angular.min.js', './bower_components/bootstrap/dist/js/bootstrap.min.js','./js/*.js'])
     .pipe(concat('all.js'))
     .pipe(uglify())
     .pipe(gulp.dest('./dist/js/'))
  });
 
 gulp.task('css', function(){
-    var vendorFiles = gulp.src('./bower_components/bootstrap/dist/css/bootstrap.min.css');
-    var appFiles = gulp.src('./dist/css/*.css');
-
-    return es.concat(appFiles, vendorFiles)
+        gulp.src(['./bower_components/bootstrap/dist/css/bootstrap.min.css',
+         './dist/css/clean-blog.css'])
         .pipe(concat('main.css'))
         //.pipe(stripCssComments())
         //.pipe(cssshrink())
