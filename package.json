@@ -41,6 +41,7 @@
     "imagemin-pngquant": "^4.0.0",
     "install": "^0.1.8",
     "main-bower-files": "^2.5.0",
+    "node-static": "^0.7.6",
     "npm": "^2.1.18"
   }
 }

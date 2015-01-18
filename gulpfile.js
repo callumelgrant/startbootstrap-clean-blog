@@ -26,12 +26,12 @@ gulp.task('img', function () {
 gulp.task('simple', function() {
     return gulp.src('./dist/temp/main.css')
         .pipe(uncss({
-            html: ['./dist/index.html'],
+            html: ['./dist/index.html', './dist/about.html' , './dist/contact.html' , './dist/post.html'],
         ignore: [
                 ''
             ]
         }))
-        .pipe(cssshrink())
+        //.pipe(cssshrink())
         .pipe(gulp.dest('./dist/finalcss/'));
 });
 
@@ -42,11 +42,11 @@ gulp.task('html', function() {
 });
 
 gulp.task('less', function () {
-  gulp.src('./less/**/clean-blog.less')
+  gulp.src('./less/clean-blog.less')
     .pipe(less({
       paths: [ path.join(__dirname, 'less', 'includes') ]
     }))
-    .pipe(gulp.dest('./css'));
+    .pipe(gulp.dest('./dist/css'));
 });
 
 gulp.task('js', function() {
@@ -62,7 +62,7 @@ gulp.task('css', function(){
 
     return es.concat(appFiles, vendorFiles)
         .pipe(concat('main.css'))
-        .pipe(stripCssComments())
-        .pipe(cssshrink())
+        //.pipe(stripCssComments())
+        //.pipe(cssshrink())
         .pipe(gulp.dest('./dist/temp/'));
 });
